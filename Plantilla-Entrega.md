@@ -3,7 +3,8 @@
 > Completar junto con el código corregido.  
 > Nombre del candidato: _____Garayo, Camila Daiana__________________  
 > Fecha de entrega: _______16/07/2026________________  
-> URL del repositorio público: _______________________  
+> URL del repositorio público: https://github.com/Camille026/Solicitudes-gestion.git  
+
 > **Enviar la URL por email antes del jueves 16/07/2026, 23:00 hs** al contacto principal: **direcciondegestioninformatica@diputadosmisiones.gov.ar** (Lun–Vie, 8:00–12:00 hs). Contacto secundario: ver [Consigna-General.md](../Consigna-General.md#entrega-y-contacto).
 
 **Orden sugerido:** Instancia 1 terminada → levantar entorno → §1 (diagnóstico, **antes** de corregir) → corregir `codigo-base/` → §2–4 → §5 (log IA, al final).
