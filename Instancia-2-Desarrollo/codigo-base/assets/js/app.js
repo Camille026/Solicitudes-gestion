@@ -10,10 +10,10 @@ document.addEventListener('DOMContentLoaded', function () {
     loadSolicitudes();
 });
 
-async function loadSolicitudes() {
-    showLoading(true);
+async function loadSolicitudes(url=API_URL) {
+     showLoading(true);
     try {
-        const response = await fetch(API_URL);
+        const response = await fetch(url);
         const result = await response.json();
         if (result.success) {
             displaySolicitudes(result.data);
@@ -28,7 +28,19 @@ async function loadSolicitudes() {
 }
 
 function applyFilters() {
-    loadSolicitudes();
+    const estado = document.getElementById('filterEstado').value;
+    const prioridad = document.getElementById('filterPrioridad').value;
+
+    let url = API_URL;
+    const params = new URLSearchParams();
+    if (estado) params.append('estado', estado);
+    if (prioridad) params.append('prioridad', prioridad);
+
+    if (params.toString()) {
+        url += '?' + params.toString();
+    }
+
+    loadSolicitudes(url);
 }
 
 function displaySolicitudes(items) {
@@ -110,7 +122,7 @@ async function saveSolicitud() {
     }
 }
 
-function createSolicitud(form) {
+async function createSolicitud(form) {
     const formData = new FormData(form);
     const response = await fetch(API_URL, { method: 'POST', body: formData });
     const result = await response.json();

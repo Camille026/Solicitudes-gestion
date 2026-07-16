@@ -9,9 +9,23 @@ class Solicitud {
     }
 
     public function getAll($filters = []) {
-        $sql = 'SELECT * FROM solicitudes ORDER BY created_at DESC';
-        $stmt = $this->db->query($sql);
-        return $stmt->fetchAll();
+            $sql = 'SELECT * FROM solicitudes WHERE 1=1';
+    $params = [];
+
+    if (!empty($filters['estado'])) {
+        $sql .= ' AND estado = ?';
+        $params[] = $filters['estado'];
+    }
+
+    if (!empty($filters['prioridad'])) {
+        $sql .= ' AND prioridad = ?';
+        $params[] = $filters['prioridad'];
+    }
+
+    $sql .= ' ORDER BY created_at DESC'; // o prioridad DESC si se define
+
+    $stmt = $this->db->query($sql, $params);
+    return $stmt->fetchAll();
     }
 
     public function getById($id) {
@@ -63,23 +77,29 @@ class Solicitud {
     }
 
     public function validate($data) {
-        $errors = [];
-        if (empty($data['titulo'])) {
-            $errors[] = 'El título es obligatorio';
-        }
-        if (empty($data['descripcion'])) {
-            $errors[] = 'La descripción es obligatoria';
-        }
-        if (empty($data['area_solicitante'])) {
-            $errors[] = 'El área solicitante es obligatoria';
-        }
-        if (empty($data['area_destino'])) {
-            $errors[] = 'El área destinataria es obligatoria';
-        }
-        if (empty($data['prioridad'])) {
-            $errors[] = 'La prioridad es obligatoria';
-        }
-        return $errors;
+    $errors = [];
+
+    if (empty(trim($data['titulo'] ?? ''))) {
+        $errors[] = 'El título es obligatorio';
     }
+    if (empty(trim($data['descripcion'] ?? ''))) {
+        $errors[] = 'La descripción es obligatoria';
+    }
+    if (empty(trim($data['area_solicitante'] ?? ''))) {
+        $errors[] = 'El área solicitante es obligatoria';
+    }
+    if (empty(trim($data['area_destino'] ?? ''))) {
+        $errors[] = 'El área destinataria es obligatoria';
+    }
+    if (empty(trim($data['prioridad'] ?? ''))) {
+        $errors[] = 'La prioridad es obligatoria';
+    } else {
+        $prioridadesValidas = ['baja', 'media', 'alta'];
+        if (!in_array(strtolower($data['prioridad']), $prioridadesValidas)) {
+            $errors[] = 'La prioridad debe ser baja, media o alta';
+        }
+    }
+
+    return $errors;}
 }
 ?>

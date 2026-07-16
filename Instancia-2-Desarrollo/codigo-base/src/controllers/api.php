@@ -60,7 +60,7 @@ class SolicitudAPI {
             }
         } catch (Exception $e) {
             $this->sendError('Error del servidor: ' . $e->getMessage(), 500);
-
+        }
     }
 
     private function getAll() {
@@ -94,10 +94,17 @@ class SolicitudAPI {
 
     private function update($id) {
         $data = $this->getInputData();
+        $solicitudes = $this->solicitud->getById($id);
         if (!$this->solicitud->getById($id)) {
             $this->sendError('Solicitud no encontrada', 404);
             return;
         }
+
+        if($solicitudes['estado'] != 'pendiente'){
+            $this->sendError('La solicitud no puede editarse en este estado', 400);
+        }
+
+
         $errors = $this->solicitud->validate($data);
         if (!empty($errors)) {
             $this->sendError($errors, 400);
