@@ -15,17 +15,15 @@
 
 ## 1. Diagnóstico de bugs (antes de corregir)
 
-| # | Bug / síntoma                                            | Archivo                         | Evidencia                                                             | Hipótesis de causa                                                                   
-|---|-------------------------------------------------------    |---------------------------------|----------------------------------------------------------------------|--------------------------------------------------------------------------------------|
-| 1 | Error SQLSTATE[42S22] Unknown column 'fecha_creacion'     | Solicitud.php                   | API devolvía error al listar                                         | Código usaba columna distinta a la definida en DB
- (fecha_creacion vs created_at)                                 |
-| 2 | Validación de título fallaba                              | Solicitud.php (método validate) | API devolvía "El título es obligatorio" aunque estaba escrito        | Input en index.html no tenía name="titulo", por lo que no llegaba 
-al backend                                                      |
-| 3 | Acciones no restringidas según estado                     | api.php                         | Se podía editar/borrar vía API aunque frontend ocultaba botones      | Faltaban reglas de negocio en controlador para bloquear edición/borrado
- según estado                                                   |
-| 4 | Función con await no declarada como asíncrona             | app.js                          | Error en consola: Unexpected reserved word 'await'                   | Falta de async en la declaración de la función                                       
-| 5 | Faltaba archivo config.php con credenciales               | config.php                      | Error de conexión PDO al iniciar                                     | Proyecto incluía solo config_example.php, requería crear config.php real 
-| 6 | Faltaban llaves de cierre en funciones                     | Solicitud.php y Controllers.php | El servidor devolvía error 500 y en consola aparecía el parse error.| Funciones o clases sin llaves de cierre(}) al final del archivo                      
+
+| # | Bug / síntoma | Archivo | Evidencia | Hipótesis de causa |
+|---|---------------|---------|-----------|-------------------|
+| 1 | Error SQLSTATE[42S22] Unknown column `fecha_creacion` | Solicitud.php | API devolvía error al listar | Código usaba columna distinta a la definida en DB (`fecha_creacion` vs `created_at`) |
+| 2 | Validación de título fallaba | Solicitud.php (método validate) | API devolvía "El título es obligatorio" aunque estaba escrito | Input en `index.html` no tenía `name="titulo"`, por lo que no llegaba al backend |
+| 3 | Acciones no restringidas según estado | api.php | Se podía editar/borrar vía API aunque frontend ocultaba botones | Faltaban reglas de negocio en controlador para bloquear edición/borrado según estado |
+| 4 | Función con `await` no declarada como asíncrona | app.js | Error en consola: *Unexpected reserved word 'await'* | Falta de `async` en la declaración de la función |
+| 5 | Faltaba archivo `config.php` con credenciales | config.php | Error de conexión PDO al iniciar | Proyecto incluía solo `config_example.php`, requería crear `config.php` real |
+| 6 | Faltaban llaves de cierre en funciones | Solicitud.php y Controllers.php | El servidor devolvía error 500 y en consola aparecía el *parse error* | Funciones o clases sin llaves de cierre (`}`) al final del archivo |
 
 *(Agregar filas si encontrás más fallos.)*
 
