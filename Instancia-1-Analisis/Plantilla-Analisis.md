@@ -2,7 +2,7 @@
 
 > Completar **todas** las secciones a partir de [Escenario.md](Escenario.md).  
 > **No leer ni modificar** `Instancia-2-Desarrollo/codigo-base/` hasta entregar este documento.  
-> Candidato: _______________________
+> Candidato: ______Garayo, Camila Daiana_________________
 
 ---
 
@@ -17,9 +17,9 @@ La entrevista permitió identificar la necesidad de sistematizar el proceso de e
 
 ## Problema que resuelve el módulo
 
-El módulo de **Solicitudes Internas** permite registrar cada solicitud junto con la información necesaria para su gestión, como el área solicitante, el área destinataria, el título, la descripción y la prioridad. Además, posibilita el seguimiento de cada solicitud mediante un conjunto de estados definidos (**PENDIENTE**, **EN_PROCESO**, **RESUELTA** y **RECHAZADA**), formalizando un flujo de trabajo y estableciendo qué acciones puede realizar cada actor en cada etapa del proceso.
+El módulo de **Solicitudes Internas** permite registrar cada solicitud junto con la información necesaria para su gestión, como el área solicitante, el área destinataria, el título, la descripción y la prioridad. Además, posibilita el seguimiento de cada solicitud mediante un conjunto de estados definidos (**PENDIENTE**, **EN_PROCESO**, **RESUELTA** y **RECHAZADA**), formalizando un flujo de trabajo y estableciendo qué acciones puede realizar en cada etapa del proceso.
 
-De esta manera, el sistema reemplaza los mecanismos informales utilizados anteriormente, como **WhatsApp**, **correo electrónico** y **planillas compartidas**, los cuales presentaban riesgos de pérdida de solicitudes, falta de trazabilidad, demoras en la atención y una gestión descentralizada de los pedidos.
+Así pues, el sistema releva las antiguas formas de solicitudes (mediante WhatsApp, emails, planillas compartidas) que poseían un riesgo potencial de pérdidas de solicitudes, de descentralización del proceso de envíos, retrasos, entre otros. 
 
 
 ---
@@ -73,30 +73,27 @@ Al final del proceso, la solicitud puede alcanzar uno de dos estados finales:
 ## 4. Reglas de negocio
 
 *Listá las reglas que inferís del escenario. Separá las que están claras de las que dependen de un supuesto (§6).*
+## Reglas de negocio
 
-| Regla                                                                                | ¿Explícita en la entrevista? | 
-|------------------------------------------------------------------------------------- |------------------------------|
+| Regla | ¿Explícita en la entrevista? |
+|-------|------------------------------|
+| Cada solicitud inicia en estado **PENDIENTE**. | Definida. |
+| La solicitud puede editarse o eliminarse mientras permanezca en estado **PENDIENTE**. | Definida. |
+| Cualquier modificación queda bloqueada una vez que la solicitud es tomada por el área destinataria. | Definida. |
+| Una solicitud en estado **EN_PROCESO** no puede editarse. | Definida. |
+| Una solicitud en estado **RESUELTA** no puede editarse. | Definida. |
+| El estado inicial cambia de **PENDIENTE** a **EN_PROCESO** cuando el área destinataria toma la solicitud. | Definida. |
+| No se puede reabrir una solicitud en estado **RECHAZADA**. | Requerimiento inconcluso; debe validarse durante el relevamiento. |
+| Solo el área solicitante puede crear una solicitud. | Inconclusa: no hay actualmente login, cualquier usuario puede ingresar y crear solicitud. |
+| Los campos **título**, **descripción**, **área solicitante**, **área destinataria** y **prioridad** son obligatorios. | Definida. |
+| Solo el área destinataria puede cambiar el estado de una solicitud (tomarla, resolverla o rechazarla). | Indefinida: no hay login, cualquier usuario podría tomar y resolverla/rechazarla. |
+| Los filtros de prioridad modifican el orden del listado. | Comportamiento aún no definido; requiere aclaración. |
+| Mientras una solicitud esté en estado **PENDIENTE** no puede cancelarse; únicamente puede eliminarse. | Definida según el relevamiento actual. |
+| El sistema debe solicitar confirmación antes de eliminar una solicitud. | Requerimiento pendiente de definición e implementación. |
 
- Cada solicitud inicia en estado **PENDIENTE**.                                        | Definida. |
- La solicitud puede editarse o eliminarse mientras permanezca en estado **PENDIENTE**. | Definida. |
- Cualquier modificación queda bloqueada una vez que la solicitud es tomada por el área
-destinataria.                                                                          | Definida. |
-Una solicitud en estado **EN_PROCESO** no puede editarse.                              | Definida. |
- Una solicitud en estado **RESUELTA** no puede editarse.                               | Definida. |
- El estado inicial cambia de **PENDIENTE** a **EN_PROCESO** cuando el área destinataria
-  toma la solicitud.                                                                   | Definida. |
- No se puede reabrir una solicitud en estado **RECHAZADA**.                            | Requerimiento inconcluso; debe validarse durante el relevamiento. |
- Solo el área solicitante puede crear una solicitud.                                   | Inconclusa: no hay actualmente login, cualquier usuario puede ingresar y crear solicitud|
- Los campos **título**, **descripción**, **área solicitante**, **área destinataria** y 
- **prioridad** son obligatorios.                                                       | Definida. |
- Solo el área destinataria puede cambiar el estado de una solicitud (tomarla,
- resolverla o rechazarla).                                                             | Indefinida: no hay login, cualquier usuario podría tomar y resolverla/rechazarla |
- Los filtros de prioridad modifican el orden del listado.                              | Comportamiento aún no definido; requiere aclaración. |
- Mientras una solicitud esté en estado **PENDIENTE** no puede cancelarse; 
- únicamente puede eliminarse.                                                          | Definida según el relevamiento actual. |
- El sistema debe solicitar confirmación antes de eliminar una solicitud.               | Requerimiento pendiente de definición e implementación. |
 
----
+
+
 
 ## 5. Modelo de datos propuesto
 
@@ -109,10 +106,10 @@ Una solicitud en estado **EN_PROCESO** no puede editarse.                       
 | Campo               | Tipo          | Restricciones            | Descripción |
 |-------              |------         |---------------           |-------------|
 | `id_solicitud`      | `INT`         | PK, AUTO_INCREMENT       | Identificador único de la solicitud. |
-| `titulo`            | `VARCHAR(50)` | NOT NULL                 | Título breve de la solicitud. |
+| `titulo`            | `VARCHAR(50)` | NOT NULL                 | Título  de la solicitud. |
 | `descripcion`       | `TEXT`        | NOT NULL                 | Descripción detallada de la solicitud. |
 | `area_solicitante`  | `VARCHAR(50)` | NOT NULL                 | Área que genera la solicitud. |
-| `area_destinataria` | `VARCHAR(50)` | NOT NULL                 | Área responsable de atender la solicitud. |
+| `area_destinataria` | `VARCHAR(50)` | NOT NULL                 | Área destinataria. |
 | `estado`            | `ENUM('PENDIENTE'
 ,'EN_PROCESO','RESUELTA','RECHAZADA')` | NOT NULL, DEFAULT `'PENDIENTE'` | Estado actual de la solicitud. |
 | `prioridad`         | `ENUM('BAJA','MEDIA','ALTA')` | NOT NULL | Nivel de prioridad asignado a la solicitud. |
@@ -179,71 +176,67 @@ Una solicitud en estado **EN_PROCESO** no puede editarse.                       
 
 ### Listado
 **Respuesta:**
--Mostrar el listado de las solicitudes 
--Mostrar el estado de cada solicitud 
--Mostrar la prioridad en la columna de la solicitud
 
+- Mostrar el listado de las solicitudes.
+- Mostrar el estado de cada solicitud.
+- Mostrar la prioridad en la columna de la solicitud.
 
 
 ### Alta, edición y baja
 **Respuesta:**
 
-##Alta
--Registrar una nueva solicitud
--Completar los campos obligatorios: para título, descripción, área, solicitante y destinatario.
--Tanto el área solicitante como el área destinataria debe escribirse a mano.
+#### Alta
+- Registrar una nueva solicitud.
+- Completar los campos obligatorios: título, descripción, área solicitante y área destinataria.
+- Tanto el área solicitante como el área destinataria deben escribirse a mano.
 
-##Edición
--La edición debe estar habilitada mientras esté en estado Pendiente.
--No debe aparecer la opción de editar si el estado pasa a estar En proceso o Resuelta/Rechazada.
+#### Edición
+- La edición debe estar habilitada mientras la solicitud esté en estado **Pendiente**.
+- No debe aparecer la opción de editar si el estado pasa a **En proceso** o **Resuelta/Rechazada**.
 
-##Baja
--El sistema debe permitir que se elimine una solicitud mientras esté en estado Pendiente.
--No debe aparecer la opción de borrar si la solicitud está en estado En proceso o Resuelta/Rechazada.
+#### Baja
+- El sistema debe permitir que se elimine una solicitud mientras esté en estado **Pendiente**.
+- No debe aparecer la opción de borrar si la solicitud está en estado **En proceso** o **Resuelta/Rechazada**.
 
-
-
+---
 
 ### Cambio de estado
 **Respuesta:**
 
--Al crearse la solicitud debe estar en estado Pendiente
--Del lado del destinatario, debe poder tomar la solicitud, cambiando su estado a En proceso.
--El área destinataria debe poder marcar una solicitud como Resuelta
--El área destinataria debe poder marcar una solicitud como Rechazada.
--Una solicitud tomada no debe poder editarse.
--Una solicitud Resuelta no debe poder editarse.
+- Al crearse la solicitud debe estar en estado **Pendiente**.
+- El área destinataria debe poder **tomar** la solicitud, cambiando su estado a **En proceso**.
+- El área destinataria debe poder marcar una solicitud como **Resuelta**.
+- El área destinataria debe poder marcar una solicitud como **Rechazada**.
+- Una solicitud tomada no debe poder editarse.
+- Una solicitud **Resuelta** no debe poder editarse.
 
-
+---
 
 ### Filtros y orden
 **Respuesta:**
 
--El sistema permite filtrar solicitudes por estado.
--El sistema debe permitir filtrar solicitudes por prioridad.
--Pueden combinarse los dos filtros: Prioridad y Estado
--La entrevista refleja la necesidad de definir si las solicitudes de prioridad Alta deben mostrarse primero.
+- El sistema permite filtrar solicitudes por **estado**.
+- El sistema debe permitir filtrar solicitudes por **prioridad**.
+- Pueden combinarse los dos filtros: **Prioridad** y **Estado**.
+- La entrevista refleja la necesidad de definir si las solicitudes de prioridad **Alta** deben mostrarse primero.
 
-
-
----
 
 ## 8. Fuera de alcance
 
 *¿Qué excluirías de esta versión según la entrevista?*
 
 **Respuesta:**
+### Requerimientos pendientes / decisiones abiertas
+**Respuesta:**
 
--Reordenamiento de la lista según prioridad, ya que no se aclaró en la entrevista.
--El login, según la entrevista, Sistemas dijo que aún no.
--Adjuntar archivos, por decisión del área de Sistemas.
--La posibilidad de reabrir un archivo que esté en estado Rechazada, ya que no hay un concenso firme sobre si debe o no hacerse, por lo tanto, -esperar la autorizacióna antes de hacer algún cambio.
--La posibilidad de reabrir o editar una solicitud Resuelta.
--Restricción por usuario sobre quién puede tomar/Resolver/Rechazar la -solicitud, sólo se restringen las acciones dependiendo del estado. -Actualmente solo habilitado la edición o cancelación en estado Pendiente.
+- Reordenamiento de la lista según prioridad, ya que no se aclaró en la entrevista.
+- El login, según la entrevista, el área de Sistemas indicó que aún no se implementará.
+- Adjuntar archivos, por decisión del área de Sistemas.
+- La posibilidad de reabrir una solicitud en estado **Rechazada**, ya que no hay consenso firme sobre si debe o no hacerse. Se debe esperar autorización antes de aplicar cambios.
+- La posibilidad de reabrir o editar una solicitud en estado **Resuelta**.
+- Restricción por usuario sobre quién puede tomar / resolver / rechazar la solicitud: actualmente solo se restringen las acciones dependiendo del estado.  
+  - Hoy solo está habilitada la edición o cancelación en estado **Pendiente**.
 
-
-
----
 
 ## 9. Plan para la Instancia 2 (opcional)
 
